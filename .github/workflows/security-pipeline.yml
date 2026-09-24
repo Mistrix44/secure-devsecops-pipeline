@@ -25,3 +25,6 @@ jobs:
         uses: returntocorp/semgrep-action@v1
         with:
           config: p/owasp-top-ten
+
+      - name: Run npm audit (Dependency Scan)
+        run: npm audit --audit-level=high
