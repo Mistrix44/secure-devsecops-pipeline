@@ -7,10 +7,17 @@ const MemosHandler = require("./memos");
 const ResearchHandler = require("./research");
 const tutorialRouter = require("./tutorial");
 const ErrorHandler = require("./error").errorHandler;
+const rateLimit = require("express-rate-limit");
 
 const index = (app, db) => {
 
     "use strict";
+
+    const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 5,
+    message: "Too many login attempts. Try again later."
+});
 
     const sessionHandler = new SessionHandler(db);
     const profileHandler = new ProfileHandler(db);
@@ -31,7 +38,7 @@ const index = (app, db) => {
 
     // Login form
     app.get("/login", sessionHandler.displayLoginPage);
-    app.post("/login", sessionHandler.handleLoginRequest);
+    app.post("/login", loginLimiter, sessionHandler.handleLoginRequest);
 
     // Signup form
     app.get("/signup", sessionHandler.displaySignupPage);
