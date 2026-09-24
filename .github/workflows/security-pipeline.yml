@@ -20,3 +20,8 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+
+      - name: Run Semgrep (SAST)
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: p/owasp-top-ten
