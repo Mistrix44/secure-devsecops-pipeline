@@ -35,4 +35,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Build Docker image
+        run: docker build -t nodegoat:scan .
+
+      - name: Run Trivy (Container Scan)
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'nodegoat:scan'
+          severity: 'CRITICAL,HIGH'
+
       
